@@ -4,7 +4,6 @@ let turn = 'X';
 let board = Array(9).fill('');
 
 const submitBtn = document.getElementById('submit');
-const playerForm = document.querySelector('.player-form');
 const gameBoard = document.querySelector('.game-board');
 const messageDiv = document.querySelector('.message');
 const cells = document.querySelectorAll('.cell');
@@ -13,12 +12,17 @@ submitBtn.addEventListener('click', () => {
     player1 = document.getElementById('player1').value.trim();
     player2 = document.getElementById('player2').value.trim();
 
-    if (player1 === '' || player2 === '') {
+    if (!player1 || !player2) {
         alert('Please enter both player names!');
         return;
     }
 
-    playerForm.style.display = 'none';
+    // Hide inputs
+    document.getElementById('player1').style.display = 'none';
+    document.getElementById('player2').style.display = 'none';
+    submitBtn.style.display = 'none';
+
+    // Show game board
     gameBoard.style.display = 'block';
     updateMessage();
 });
@@ -57,9 +61,5 @@ function checkWinner() {
         [0,3,6], [1,4,7], [2,5,8],
         [0,4,8], [2,4,6]
     ];
-
-    return winCombos.some(combo => {
-        const [a, b, c] = combo;
-        return board[a] && board[a] === board[b] && board[a] === board[c];
-    });
+    return winCombos.some(([a,b,c]) => board[a] && board[a] === board[b] && board[a] === board[c]);
 }
